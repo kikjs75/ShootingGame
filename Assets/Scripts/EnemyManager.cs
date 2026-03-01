@@ -20,8 +20,6 @@ public class EnemyManager : MonoBehaviour
     // 방향을 전역 변수로 만들어 Start와 Update에서 사용
     Vector3 dir;
 
-    // 필요 속성: 이동 속도
-    public float speed = 1;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -63,6 +61,9 @@ public class EnemyManager : MonoBehaviour
             //  내 위치에 갖다 놓고 싶다.
             enemy.transform.position = transform.position;
 
+            // 결정한 방향을 적에게 전달한다.
+            enemy.GetComponent<Enemy>().dir = dir;
+
             // 현재 시간을 0으로 초기화.
             //  => 현재 시간이 일정 시간이 되고 난 후 계속 일정 시간보다 크기 때문에 적을 마구 생성합니다.
             //      그리고 Enemy 가 서로 부딪혀 계속 파괴도고 있습니다.
@@ -71,9 +72,6 @@ public class EnemyManager : MonoBehaviour
 
             // 적을 생성한 후 적의 생성 시간을 다시 설정하고 싶다.
             createTime = UnityEngine.Random.Range(minTime, maxTime);
-
-            // 이동하고 싶다. 공식 P = P0 + v + t
-            transform.position += dir * speed * Time.deltaTime;
         }
 
 
