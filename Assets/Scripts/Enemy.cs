@@ -8,10 +8,28 @@ public class Enemy : MonoBehaviour
     // 이동 방향 (EnemyManager에서 설정)
     public Vector3 dir = Vector3.down;
 
+    // 체력
+    public int hp = 3;
+
+    // 체력 표시 텍스트
+    TextMesh hpText;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        // 체력 표시 텍스트 오브젝트 생성
+        GameObject textObj = new GameObject("HPText");
+        textObj.transform.SetParent(transform);
+        textObj.transform.localPosition = new Vector3(0, 1.0f, 0);
 
+        textObj.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+
+        hpText = textObj.AddComponent<TextMesh>();
+        hpText.text = hp.ToString();
+        hpText.fontSize = 15;
+        hpText.alignment = TextAlignment.Center;
+        hpText.anchor = TextAnchor.MiddleCenter;
+        hpText.color = Color.white;
     }
 
     // Update is called once per frame
@@ -31,15 +49,30 @@ public class Enemy : MonoBehaviour
         {
             // 플레이어면 처음 위치로 리스폰
             player.Respawn();
+            Destroy(gameObject);
+        }
+        else if (collision.gameObject.GetComponent<Bullet>() != null)
+        {
+            // 총알에 맞으면 체력 감소
+            hp--;
+            hpText.text = hp.ToString();
+
+            // 총알 제거
+            Destroy(collision.gameObject);
+
+            // 체력이 0 이하면 적 제거
+            if (hp <= 0)
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {
             // 너 죽고
             Destroy(collision.gameObject);
+            // 나 죽자.
+            Destroy(gameObject);
         }
-
-        // 나 죽자.
-        Destroy(gameObject);
     }
 }
 
