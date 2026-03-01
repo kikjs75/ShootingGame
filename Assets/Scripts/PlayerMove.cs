@@ -5,10 +5,18 @@ public class PlayerMove : MonoBehaviour
     // 플레이어가 이동할 속력
     public float speed = 5;
 
+    // 초기 위치
+    Vector3 initPos;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        initPos = transform.position;
+    }
 
+    public void Respawn()
+    {
+        transform.position = initPos;
     }
 
     // Update is called once per frame

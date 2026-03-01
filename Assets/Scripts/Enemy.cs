@@ -26,8 +26,17 @@ public class Enemy : MonoBehaviour
     // 충돌 시작
     void OnCollisionEnter(Collision collision)
     {
-        // 너 죽고
-        Destroy(collision.gameObject);
+        PlayerMove player = collision.gameObject.GetComponent<PlayerMove>();
+        if (player != null)
+        {
+            // 플레이어면 처음 위치로 리스폰
+            player.Respawn();
+        }
+        else
+        {
+            // 너 죽고
+            Destroy(collision.gameObject);
+        }
 
         // 나 죽자.
         Destroy(gameObject);
